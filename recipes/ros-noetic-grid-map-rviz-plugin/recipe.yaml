@@ -1,0 +1,58 @@
+package:
+  name: ros-noetic-grid-map-rviz-plugin
+  version: 1.6.4
+source:
+  git_url: https://github.com/anybotics/grid_map-release.git
+  git_rev: release/noetic/grid_map_rviz_plugin/1.6.4-1
+  folder: ros-noetic-grid-map-rviz-plugin/src/work
+
+build:
+  script:
+    sel(win): bld_catkin.bat
+    sel(unix): build_catkin.sh
+  number: 4
+about:
+  home: https://www.ros.org/
+  license: BSD-3-Clause
+  summary: |
+    Robot Operating System
+
+extra:
+  recipe-maintainers:
+    - ros-forge
+
+requirements:
+  build:
+    - "{{ compiler('cxx') }}"
+    - "{{ compiler('c') }}"
+    - ninja
+    - sel(unix): make
+    - cmake
+    - sel(unix): "{{ cdt('mesa-libgl-devel') }}"
+    - sel(unix): "{{ cdt('mesa-dri-drivers') }}"
+    - sel(linux): "{{ cdt('libselinux') }}"
+    - sel(linux): "{{ cdt('libxdamage') }}"
+    - sel(linux): "{{ cdt('libxxf86vm') }}"
+    - sel(linux): "{{ cdt('libxfixes') }}"
+    - sel(linux): "{{ cdt('libxext') }}"
+    - sel(linux): "{{ cdt('libxau') }}"
+  host:
+    - gtest
+    - python
+    - qt 5.12
+    - ros-distro-mutex 0.1 noetic
+    - ros-noetic-catkin
+    - ros-noetic-grid-map-msgs
+    - ros-noetic-grid-map-ros
+    - ros-noetic-rviz
+    - sel(unix): xorg-libx11
+    - sel(unix): xorg-libxext
+  run:
+    - python
+    - qt
+    - ros-distro-mutex 0.1 noetic
+    - ros-noetic-grid-map-msgs
+    - ros-noetic-grid-map-ros
+    - ros-noetic-rviz
+    - sel(unix): xorg-libx11
+    - sel(unix): xorg-libxext

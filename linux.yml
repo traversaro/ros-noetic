@@ -1,0 +1,66 @@
+pool:
+  vmImage: ubuntu-16.04
+trigger:
+- buildbranch_linux
+pr: none
+stages:
+- stage: stage_0
+  jobs:
+  - job: ros_noetic_grid_map_core_ros_noetic_grid_map_msgs_ros_noetic_grid_map_cv_ros_noetic_grid_map_octomap
+    steps:
+    - script: |-
+        export CI=azure
+        export GIT_BRANCH=$BUILD_SOURCEBRANCHNAME
+        export FEEDSTOCK_NAME=$(basename ${BUILD_REPOSITORY_NAME})
+        .scripts/run_docker_build.sh
+      env:
+        ANACONDA_API_TOKEN: $(ANACONDA_API_TOKEN)
+        CURRENT_RECIPES: ros-noetic-grid-map-core ros-noetic-grid-map-msgs ros-noetic-grid-map-cv
+          ros-noetic-grid-map-octomap
+        DOCKER_IMAGE: condaforge/linux-anvil-comp7
+      displayName: Build ros-noetic-grid-map-core ros-noetic-grid-map-msgs ros-noetic-grid-map-cv
+        ros-noetic-grid-map-octomap
+- stage: stage_1
+  jobs:
+  - job: ros_noetic_grid_map_ros
+    steps:
+    - script: |-
+        export CI=azure
+        export GIT_BRANCH=$BUILD_SOURCEBRANCHNAME
+        export FEEDSTOCK_NAME=$(basename ${BUILD_REPOSITORY_NAME})
+        .scripts/run_docker_build.sh
+      env:
+        ANACONDA_API_TOKEN: $(ANACONDA_API_TOKEN)
+        CURRENT_RECIPES: ros-noetic-grid-map-ros
+        DOCKER_IMAGE: condaforge/linux-anvil-comp7
+      displayName: Build ros-noetic-grid-map-ros
+- stage: stage_2
+  jobs:
+  - job: ros_noetic_grid_map_filters_ros_noetic_grid_map_loader_ros_noetic_grid_map_rviz_plugin_ros_noetic_grid_map_visualization
+    steps:
+    - script: |-
+        export CI=azure
+        export GIT_BRANCH=$BUILD_SOURCEBRANCHNAME
+        export FEEDSTOCK_NAME=$(basename ${BUILD_REPOSITORY_NAME})
+        .scripts/run_docker_build.sh
+      env:
+        ANACONDA_API_TOKEN: $(ANACONDA_API_TOKEN)
+        CURRENT_RECIPES: ros-noetic-grid-map-filters ros-noetic-grid-map-loader ros-noetic-grid-map-rviz-plugin
+          ros-noetic-grid-map-visualization
+        DOCKER_IMAGE: condaforge/linux-anvil-comp7
+      displayName: Build ros-noetic-grid-map-filters ros-noetic-grid-map-loader ros-noetic-grid-map-rviz-plugin
+        ros-noetic-grid-map-visualization
+- stage: stage_3
+  jobs:
+  - job: ros_noetic_grid_map_demos_ros_noetic_grid_map
+    steps:
+    - script: |-
+        export CI=azure
+        export GIT_BRANCH=$BUILD_SOURCEBRANCHNAME
+        export FEEDSTOCK_NAME=$(basename ${BUILD_REPOSITORY_NAME})
+        .scripts/run_docker_build.sh
+      env:
+        ANACONDA_API_TOKEN: $(ANACONDA_API_TOKEN)
+        CURRENT_RECIPES: ros-noetic-grid-map-demos ros-noetic-grid-map
+        DOCKER_IMAGE: condaforge/linux-anvil-comp7
+      displayName: Build ros-noetic-grid-map-demos ros-noetic-grid-map

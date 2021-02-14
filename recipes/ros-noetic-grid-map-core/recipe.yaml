@@ -1,0 +1,40 @@
+package:
+  name: ros-noetic-grid-map-core
+  version: 1.6.4
+source:
+  git_url: https://github.com/anybotics/grid_map-release.git
+  git_rev: release/noetic/grid_map_core/1.6.4-1
+  folder: ros-noetic-grid-map-core/src/work
+
+build:
+  script:
+    sel(win): bld_catkin.bat
+    sel(unix): build_catkin.sh
+  number: 4
+about:
+  home: https://www.ros.org/
+  license: BSD-3-Clause
+  summary: |
+    Robot Operating System
+
+extra:
+  recipe-maintainers:
+    - ros-forge
+
+requirements:
+  build:
+    - "{{ compiler('cxx') }}"
+    - "{{ compiler('c') }}"
+    - ninja
+    - sel(unix): make
+    - cmake
+  host:
+    - eigen
+    - gtest
+    - python
+    - ros-distro-mutex 0.1 noetic
+    - ros-noetic-catkin
+  run:
+    - eigen
+    - python
+    - ros-distro-mutex 0.1 noetic
