@@ -38,42 +38,41 @@ To get started with conda (or mamba) as package managers, you need to have a bas
 > Note: Make sure to _not_ install the ROS packages (in particular the `ros-noetic-catkin` package) in your base environment as this leads to issues down the track. On the other hand, conda and mamba must not be installed in the robostackenv, they should only be installed in base. Also do not source the system ROS environment, as the `PYTHONPATH` set in the setup script conflicts with the conda environment.
 
 ```bash
-conda create -n robostackenv python=3.8
-conda activate robostackenv
+# if you don't have mamba yet, install it first (not needed when using mambaforge):
+conda install mamba -c conda-forge
+
+# now create a new environment
+mamba create -n ros_env python=3.8
+conda activate ros_env
 # this adds the conda-forge channel to the new created environment configuration 
 conda config --env --add channels conda-forge
-# and the robostack channel
-conda config --env --add channels robostack
+# and the robostack channels
+conda config --env --add channels robostack  # for Foxy & Noetic
+conda config --env --add channels robostack-experimental  # for Galactic
 # it's very much advised to use strict channel priority
 conda config --env --set channel_priority strict
 
-# either
-conda install ros-noetic-desktop
-# or if you have mamba and want to use it
-mamba install ros-noetic-desktop
+# Install the version of ROS you are interested in:
+mamba install ros-galactic-desktop  # (or: mamba install ros-noetic-desktop)
 
-# optionally, install some compiler packages if you want to e.g. build packages in a catkin_ws - with conda:
-conda install compilers cmake pkg-config make ninja
-# or with mamba:
-mamba install compilers cmake pkg-config make ninja
+# optionally, install some compiler packages if you want to e.g. build packages in a colcon_ws:
+mamba install compilers cmake pkg-config make ninja colcon-common-extensions
 
-# on linux and osx (but not Windows) you might want to:
+# on Linux and osx (but not Windows) for ROS1 you might want to:
 mamba install catkin_tools
+
 # on Windows, install Visual Studio 2017 or 2019 with C++ support 
 # see https://docs.microsoft.com/en-us/cpp/build/vscpp-step-0-installation?view=msvc-160
 
-# only on linux, if you are having issues finding GL/OpenGL, also do:
-mamba install mesa-libgl-devel-cos6-x86_64 mesa-dri-drivers-cos6-x86_64 libselinux-cos6-x86_64 libxdamage-cos6-x86_64 libxxf86vm-cos6-x86_64 libxext-cos6-x86_64 xorg-libxfixes
-
-# on Windows, install the Visual Studio command prompt via Conda:
-conda install vs2019_win-64
+# on Windows, install the Visual Studio command prompt:
+mamba install vs2019_win-64
 
 # note that in this case, you should also install the necessary dependencies with conda/mamba, if possible
 
 # reload environment to activate required scripts before running anything
 # on Windows, please restart the Anaconda Prompt / Command Prompt!
 conda deactivate
-conda activate robostackenv
+conda activate ros_env
 
 # if you want to use rosdep, also do:
 mamba install rosdep
